@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>英国 2026 Warm Homes Plan｜一页式动态解读</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { ink: '#000000', accent: '#4D6BFE' },
+          boxShadow: { soft: '0 10px 30px rgba(0,0,0,.06)' },
+          borderRadius: { '4xl': '2rem' }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    html{scroll-behavior:smooth}
+    body{font-family:"Inter","Noto Sans SC",system-ui,sans-serif;background:#fff;color:#000;overflow-x:hidden}
+    .grid-bg{background-image:linear-gradient(to right, rgba(0,0,0,.035) 1px, transparent 1px),linear-gradient(to bottom, rgba(0,0,0,.035) 1px, transparent 1px);background-size:40px 40px}
+    .bento{border:1px solid rgba(0,0,0,.08);box-shadow:0 10px 30px rgba(0,0,0,.05);border-radius:32px;background:#fff;position:relative;overflow:hidden}
+    .accent-wash:before{content:"";position:absolute;inset:auto -10% -25% auto;width:60%;aspect-ratio:1/1;background:radial-gradient(circle, rgba(77,107,254,.22) 0%, rgba(77,107,254,.09) 32%, rgba(77,107,254,0) 70%);filter:blur(10px)}
+    .accent-top:after{content:"";position:absolute;inset:-18% auto auto -10%;width:44%;aspect-ratio:1/1;background:radial-gradient(circle, rgba(77,107,254,.18) 0%, rgba(77,107,254,.08) 40%, rgba(77,107,254,0) 72%);filter:blur(12px)}
+    .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;color:rgba(0,0,0,.52);font-weight:700}
+    .cn-title{font-family:"Noto Sans SC","Inter",sans-serif}
+    .num{font-weight:900;line-height:.9;letter-spacing:-.06em}
+    .tiny{color:rgba(0,0,0,.58);font-size:.84rem;line-height:1.6}
+    .source-link{border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:.45rem .8rem;display:inline-flex;align-items:center;gap:.45rem;font-size:.82rem;color:#000;text-decoration:none;transition:all .2s ease;background:#fff}
+    .source-link:hover{transform:translateY(-1px);border-color:rgba(77,107,254,.45);box-shadow:0 8px 18px rgba(77,107,254,.12)}
+    .pulse-dot{width:.56rem;height:.56rem;border-radius:999px;background:#4D6BFE;box-shadow:0 0 0 0 rgba(77,107,254,.5);animation:pulse 2.2s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(77,107,254,.45)}70%{box-shadow:0 0 0 14px rgba(77,107,254,0)}100%{box-shadow:0 0 0 0 rgba(77,107,254,0)}}
+    .floatY{animation:floatY 6s ease-in-out infinite}@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    .route-chip{border:1px solid rgba(0,0,0,.08);border-radius:999px;padding:.5rem .8rem;font-size:.85rem;background:linear-gradient(180deg, rgba(77,107,254,.08), rgba(77,107,254,.02))}
+    .line-art svg path,.line-art svg circle,.line-art svg rect,.line-art svg polyline{stroke:#000;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .accent-line svg .accent{stroke:#4D6BFE}
+    .sticky-nav{backdrop-filter: blur(14px);background:rgba(255,255,255,.82)}
+    .fade-up{opacity:0;transform:translateY(16px);transition:all .75s cubic-bezier(.2,.7,.2,1)} .fade-up.in{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body class="grid-bg">
+  <header class="sticky top-0 z-40 border-b border-black/5 sticky-nav">
+    <div class="max-w-[1920px] mx-auto px-5 md:px-8 xl:px-12 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl border border-black/10 flex items-center justify-center"><i class="fa-solid fa-house-circle-check text-[16px]"></i></div>
+        <div><div class="text-sm font-bold">英国 2026 Warm Homes Plan</div><div class="text-xs text-black/55">Policy dashboard · CN edition</div></div>
+      </div>
+      <nav class="hidden md:flex items-center gap-2 text-sm">
+        <a href="#hero" class="px-3 py-2 rounded-full hover:bg-black/5">概览</a>
+        <a href="#rules" class="px-3 py-2 rounded-full hover:bg-black/5">细则</a>
+        <a href="#routes" class="px-3 py-2 rounded-full hover:bg-black/5">路径</a>
+        <a href="#timeline" class="px-3 py-2 rounded-full hover:bg-black/5">时间线</a>
+        <a href="#sources" class="px-3 py-2 rounded-full hover:bg-black/5">来源</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-[1920px] mx-auto px-5 md:px-8 xl:px-12 pt-8 pb-16">
+    <section id="hero" class="grid grid-cols-1 xl:grid-cols-12 gap-5 xl:gap-6">
+      <article class="bento accent-wash accent-top xl:col-span-7 p-6 md:p-8 xl:p-10 min-h-[520px] flex flex-col justify-between fade-up">
+        <div class="flex items-center gap-2 mb-8"><span class="pulse-dot"></span><span class="eyebrow">Official update · Jan 2026</span></div>
+        <div class="max-w-[880px]">
+          <div class="text-sm md:text-base text-black/55 mb-4">英国政府正式发布的全国住宅升级主计划</div>
+          <h1 class="cn-title text-[15vw] sm:text-[11vw] xl:text-[7rem] 2xl:text-[8.5rem] leading-[0.9] font-black tracking-[-0.08em]">更暖的家，<br/>更低的账单。</h1>
+          <p class="mt-6 text-lg md:text-xl leading-relaxed text-black/75 max-w-[760px]">这不是单一补贴，而是一整套 <span class="font-semibold">grants + loans + standards + agency + bill support</span> 的组合政策。2026 年版 Warm Homes Plan 把低收入家庭、租房市场、社会住房、热泵、屋顶光伏、电池与账单减负统一到同一张路线图里。</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 mt-10">
+          <div class="rounded-[28px] border border-black/8 p-5 bg-white/70"><div class="eyebrow mb-2">target</div><div class="num text-5xl md:text-6xl">5M</div><div class="mt-2 text-black/70">到 2030 年最多升级 <b>500 万套住宅</b></div></div>
+          <div class="rounded-[28px] border border-black/8 p-5 bg-white/70"><div class="eyebrow mb-2">public investment</div><div class="num text-5xl md:text-6xl">£15B</div><div class="mt-2 text-black/70">公开表述的总公共投资规模</div></div>
+          <div class="rounded-[28px] border border-black/8 p-5 bg-white/70"><div class="eyebrow mb-2">fuel poverty</div><div class="num text-5xl md:text-6xl">1M</div><div class="mt-2 text-black/70">到 2030 年最多帮助 <b>100 万户家庭</b>摆脱燃料贫困</div></div>
+        </div>
+      </article>
+
+      <article class="bento xl:col-span-5 p-6 md:p-8 fade-up">
+        <div class="flex items-start justify-between gap-4">
+          <div><div class="eyebrow mb-2">what actually changed in 2026</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">2026 年已明确的硬信息</h2></div>
+          <div class="w-14 h-14 rounded-[20px] border border-black/10 flex items-center justify-center floatY"><i class="fa-solid fa-bolt text-accent text-xl"></i></div>
+        </div>
+        <div class="mt-8 space-y-4">
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-sm text-black/50 mb-1">01 · Warm Home Discount</div><div class="text-xl font-bold">£150 折扣继续到 2030/31</div><p class="tiny mt-2">2026/27 起进入新的 5 年周期；英格兰与威尔士继续以单一 Core Group 为主，绝大多数符合资格家庭自动匹配发放。</p></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-sm text-black/50 mb-1">02 · Private rented homes</div><div class="text-xl font-bold">私人出租房朝 EPC C 收紧</div><p class="tiny mt-2">政府回应已确认目标方向：新租约拟从 2028 年开始适用，全部租约到 2030 年覆盖；每套房东投资上限 £10,000。</p></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-sm text-black/50 mb-1">03 · Consumer journey</div><div class="text-xl font-bold">Warm Homes Agency 预计自 2027 年提供统一咨询入口</div><p class="tiny mt-2">提供 online + phone 的中立咨询，链接安装商、融资选项和政府支持，减少“政策太多、入口太散”的问题。</p></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-sm text-black/50 mb-1">04 · Technology stack</div><div class="text-xl font-bold">重点不是单一保温，而是 solar + battery + heat pump + insulation 组合</div><p class="tiny mt-2">技术附录把热泵、屋顶光伏、电池与保温列为核心部署对象，并给出更高的 2030 安装量目标。</p></div>
+        </div>
+      </article>
+
+      <article class="bento xl:col-span-3 p-6 fade-up">
+        <div class="eyebrow mb-3">budget logic</div><div class="num text-[4.2rem] md:text-[5.2rem]">£13.2B</div>
+        <p class="mt-3 text-black/70 leading-relaxed">Spending Review 2025 已承诺在 2025/26–2029/30 再投入 <b>£13.2 billion</b> 用于 Warm Homes Plan；而政府新闻稿对外口径使用 <b>£15 billion public investment</b> 作为总计划规模展示。</p>
+        <div class="mt-5 h-[170px] line-art accent-line"><svg viewBox="0 0 300 160" class="w-full h-full"><rect x="18" y="18" width="264" height="124" rx="24"></rect><polyline class="accent" points="40,115 92,104 128,88 168,78 212,54 258,40"></polyline><circle class="accent" cx="258" cy="40" r="6"></circle><path d="M40 120 H258"></path><path d="M55 120 V64"></path><path d="M105 120 V90"></path><path d="M155 120 V78"></path><path d="M205 120 V62"></path></svg></div>
+        <div class="tiny">页面中同时展示两种官方表述，避免把“阶段投入”和“计划总规模”混为一谈。</div>
+      </article>
+
+      <article class="bento xl:col-span-4 p-6 accent-wash fade-up">
+        <div class="eyebrow mb-3">bill signal</div><div class="num text-[4.4rem] md:text-[5.8rem]">£150</div>
+        <p class="mt-3 text-black/70 leading-relaxed">除 Warm Home Discount 外，政府还宣布从 <b>2026 年 4 月</b> 起，普通家庭平均再减少约 <b>£150</b> 的账单相关成本；高用能家庭净减负可能更高。</p>
+        <div class="mt-5 flex flex-wrap gap-2"><span class="route-chip">April 2026</span><span class="route-chip">bill-cost reform</span><span class="route-chip">average household</span></div>
+      </article>
+
+      <article class="bento xl:col-span-5 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">technology ambition</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">核心技术目标</h2>
+        <div class="grid grid-cols-2 gap-4 mt-6">
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-sm text-black/50">heat pump target</div><div class="num text-5xl mt-2">450k+</div><div class="tiny mt-2">2030 年现有建筑与新建建筑年安装量合计目标</div></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-sm text-black/50">best-case saving</div><div class="num text-5xl mt-2">£550</div><div class="tiny mt-2">热泵 + 光伏 + 电池组合的“典型家庭最高年节省”示例</div></div>
+        </div>
+        <canvas id="techChart" class="mt-6 !h-[240px]"></canvas>
+      </article>
+
+      <article class="bento xl:col-span-12 p-4 md:p-6 fade-up">
+        <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+          <div><div class="eyebrow mb-2">read this correctly</div><div class="cn-title text-2xl md:text-3xl font-black tracking-[-0.04em]">这项计划不是“全国统一一个申请入口、一个资格规则”</div></div>
+          <div class="text-black/65 max-w-[920px] leading-relaxed">它是多个子路径组合而成：<b>面向低收入家庭的地方政府补助</b>、<b>面向房主的低息/零息贷款</b>、<b>面向租房市场的最低能效标准</b>、<b>面向全英符合资格家庭的冬季账单折扣</b>，再叠加 2026 年起的账单成本改革与未来统一咨询服务。</div>
+        </div>
+      </article>
+    </section>
+
+    <section id="rules" class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-5 xl:gap-6">
+      <article class="bento xl:col-span-7 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">detailed rules</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">用户最关心的细则，拆开看</h2>
+        <div class="mt-8 grid md:grid-cols-2 gap-4">
+          <div class="rounded-[26px] border border-black/8 p-5"><div class="text-sm text-black/50">A. 低收入家庭 / Low-income route</div><h3 class="mt-2 text-2xl font-black">Warm Homes: Local Grant</h3><ul class="mt-4 space-y-2 text-black/72 leading-relaxed"><li>• 仅限 <b>England</b>。</li><li>• 房屋需为私人产权：自住或私人租赁。</li><li>• EPC 需为 <b>D / E / F / G</b>。</li><li>• 家庭收入通常 <b>£36,000/年或以下</b>，或基于福利 / 邮编条件纳入。</li><li>• 住户通常 <b>无需自付</b>升级费用。</li><li>• 可覆盖保温、空气源热泵、智能控制、太阳能板等。</li><li>• 已分配预算：<b>£500 million</b>。</li></ul></div>
+          <div class="rounded-[26px] border border-black/8 p-5 accent-wash"><div class="text-sm text-black/50">B. 房主 / Homeowners</div><h3 class="mt-2 text-2xl font-black">低息 / 零息政府支持贷款</h3><ul class="mt-4 space-y-2 text-black/72 leading-relaxed"><li>• 2026 计划文件明确：房主可申请政府支持的 <b>low- and zero-interest loans</b>。</li><li>• 官方公开表述优先点名 <b>solar panels</b>；燃料贫困战略又写明愿景是支持 <b>单项或成套措施</b>。</li><li>• 相关低成本融资设计拟与贷款机构合作推进。</li><li>• 融资细则仍属后续实施层面，当前应理解为 <b>方向已定，产品参数待落地</b>。</li></ul></div>
+          <div class="rounded-[26px] border border-black/8 p-5"><div class="text-sm text-black/50">C. 私人租房市场 / PRS</div><h3 class="mt-2 text-2xl font-black">EPC C 方向已锁定</h3><ul class="mt-4 space-y-2 text-black/72 leading-relaxed"><li>• 新租约拟从 <b>2028</b> 起适用；全部租约拟到 <b>2030</b> 覆盖。</li><li>• 采用新的 EPC 双指标框架：以建筑围护性能为主，并搭配 smart readiness 或 heating system 次指标。</li><li>• 房东单套房产最高支出保护：<b>£10,000</b>。</li><li>• 这是租房市场的关键执行杠杆，不等同于直接现金补贴。</li></ul></div>
+          <div class="rounded-[26px] border border-black/8 p-5"><div class="text-sm text-black/50">D. 冬季账单支持 / Bill support</div><h3 class="mt-2 text-2xl font-black">Warm Home Discount</h3><ul class="mt-4 space-y-2 text-black/72 leading-relaxed"><li>• 2026/27 至 2030/31 持续实施。</li><li>• 每个冬季提供 <b>£150</b> 电费账单折扣。</li><li>• 扩围后总符合资格户数约 <b>600 万</b>。</li><li>• 英格兰和威尔士大多数符合资格住户自动发放；苏格兰自动发放覆盖也明显扩大。</li></ul></div>
+        </div>
+      </article>
+
+      <article class="bento xl:col-span-5 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">what is confirmed vs pending</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">哪些是已落地，哪些还在继续细化</h2>
+        <div class="mt-7 space-y-3">
+          <div class="rounded-[24px] border border-black/8 p-4 bg-black text-white"><div class="text-xs uppercase tracking-[.18em] text-white/60">confirmed</div><div class="mt-2 font-bold">计划目标、投资口径、WHD 延续、PRS 方向、Local Grant 资格、Agency 建设方向</div></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-xs uppercase tracking-[.18em] text-black/45">still to be finalised</div><div class="mt-2 font-bold">房主贷款具体产品、更多社会住房配套细节、Agency 完整服务流程、部分实施细则与后续法规</div></div>
+        </div>
+        <canvas id="statusChart" class="mt-7 !h-[260px]"></canvas>
+        <p class="tiny mt-4">这正是 2026 Warm Homes Plan 的阅读难点：<b>战略层已很完整，执行层则分批法规化</b>。</p>
+      </article>
+    </section>
+
+    <section id="routes" class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-5 xl:gap-6">
+      <article class="bento xl:col-span-12 p-6 md:p-8 fade-up">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+          <div><div class="eyebrow mb-2">four routes</div><h2 class="cn-title text-3xl md:text-5xl font-black tracking-[-0.05em]">用户路径图</h2></div>
+          <div class="text-black/60 max-w-[820px]">把它当成一个 decision map 来理解，比把它当作单一补贴项目更准确。</div>
+        </div>
+        <div class="mt-8 grid md:grid-cols-2 2xl:grid-cols-4 gap-4">
+          <div class="rounded-[28px] p-5 border border-black/8"><div class="w-12 h-12 rounded-2xl border border-black/10 flex items-center justify-center mb-4"><i class="fa-solid fa-hand-holding-dollar"></i></div><div class="font-black text-2xl">低收入家庭</div><div class="text-black/70 mt-2">优先看 Local Grant</div><div class="tiny mt-4">England / EPC D–G / 私有住房 / 通常收入 ≤ £36,000 / 地方政府安排勘察和施工。</div></div>
+          <div class="rounded-[28px] p-5 border border-black/8 accent-wash"><div class="w-12 h-12 rounded-2xl border border-black/10 flex items-center justify-center mb-4"><i class="fa-solid fa-solar-panel text-accent"></i></div><div class="font-black text-2xl">房主</div><div class="text-black/70 mt-2">优先看低息/零息贷款</div><div class="tiny mt-4">官方已明确贷款路线，尤其强调 solar panels；热泵现有 £7,500 Boiler Upgrade Scheme 仍是相关并行支持之一。</div></div>
+          <div class="rounded-[28px] p-5 border border-black/8"><div class="w-12 h-12 rounded-2xl border border-black/10 flex items-center justify-center mb-4"><i class="fa-solid fa-key"></i></div><div class="font-black text-2xl">房东 / 租房市场</div><div class="text-black/70 mt-2">优先看能效合规义务</div><div class="tiny mt-4">2028 / 2030 节点很关键。重点不只是保温，而是 fabric + smart / heating system 的组合合规。</div></div>
+          <div class="rounded-[28px] p-5 border border-black/8"><div class="w-12 h-12 rounded-2xl border border-black/10 flex items-center justify-center mb-4"><i class="fa-solid fa-receipt"></i></div><div class="font-black text-2xl">符合资格账单用户</div><div class="text-black/70 mt-2">优先看 Warm Home Discount</div><div class="tiny mt-4">每年冬季 £150，延长到 2030/31；2026 年起同时叠加平均 £150 的账单成本减负政策。</div></div>
+        </div>
+      </article>
+
+      <article class="bento xl:col-span-7 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">timeline</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">关键时间线</h2>
+        <div class="mt-8 relative"><div class="absolute left-4 top-0 bottom-0 w-px bg-black/10"></div><div class="space-y-6">
+          <div class="relative pl-14"><div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center text-accent font-bold">1</div><div class="font-bold text-xl">2025</div><div class="text-black/70 mt-1">Spending Review 追加 £13.2bn；Warm Homes: Local Grant 已启动地方部署；WHD 已扩围。</div></div>
+          <div class="relative pl-14"><div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center text-accent font-bold">2</div><div class="font-bold text-xl">Jan 2026</div><div class="text-black/70 mt-1">正式发布 Warm Homes Plan、技术附录、燃料贫困战略、私人租房能效回应。</div></div>
+          <div class="relative pl-14"><div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center text-accent font-bold">3</div><div class="font-bold text-xl">Apr 2026</div><div class="text-black/70 mt-1">平均家庭账单成本减少约 £150 的预算改革开始生效。</div></div>
+          <div class="relative pl-14"><div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center text-accent font-bold">4</div><div class="font-bold text-xl">From 2027</div><div class="text-black/70 mt-1">Warm Homes Agency 计划提供统一的 online + phone 咨询与引导入口。</div></div>
+          <div class="relative pl-14"><div class="absolute left-0 top-1 w-8 h-8 rounded-full bg-accent/12 border border-accent/30 flex items-center justify-center text-accent font-bold">5</div><div class="font-bold text-xl">2028 → 2030</div><div class="text-black/70 mt-1">私人出租房新租约先适用，随后全租约覆盖；到 2030 形成 500 万套住宅升级目标与 450k+ 热泵年装机目标。</div></div>
+        </div></div>
+      </article>
+
+      <article class="bento xl:col-span-5 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">why it matters</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">政策意图的底层逻辑</h2>
+        <div class="mt-6 space-y-4">
+          <div class="rounded-[24px] p-4 border border-black/8"><div class="font-bold">从“补贴一项技术”转向“改造整套住房系统”</div><div class="tiny mt-2">保温、清洁供热、屋顶发电和储能被放到同一张政策版图中。</div></div>
+          <div class="rounded-[24px] p-4 border border-black/8"><div class="font-bold">从“中央分散计划”转向“地方 + Agency 协同”</div><div class="tiny mt-2">地方政府掌握住房存量与社区关系，Agency 负责统一消费者旅程。</div></div>
+          <div class="rounded-[24px] p-4 border border-black/8"><div class="font-bold">从“只管节能”转向“同时处理 affordability”</div><div class="tiny mt-2">Warm Home Discount 延续、2026 账单成本改革、燃料贫困战略同步推出。</div></div>
+        </div>
+        <div class="mt-7 line-art"><svg viewBox="0 0 420 220" class="w-full h-[220px]"><rect x="10" y="10" width="400" height="200" rx="28"></rect><path d="M70 160 L110 120 L155 134 L205 76 L254 94 L312 48"></path><circle cx="70" cy="160" r="4"></circle><circle cx="110" cy="120" r="4"></circle><circle cx="155" cy="134" r="4"></circle><circle cx="205" cy="76" r="4"></circle><circle cx="254" cy="94" r="4"></circle><circle cx="312" cy="48" r="4"></circle><path d="M64 180 H340"></path><path d="M64 180 V36"></path><path class="accent" d="M328 42 h44"></path><path class="accent" d="M350 20 v44"></path></svg></div>
+      </article>
+    </section>
+
+    <section id="timeline" class="mt-6 grid grid-cols-1 xl:grid-cols-12 gap-5 xl:gap-6">
+      <article class="bento xl:col-span-8 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">numbers at a glance</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">关键数字速览</h2>
+        <div class="mt-7 grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-black/50 text-sm">总目标</div><div class="num text-5xl mt-2">2030</div><div class="tiny mt-2">计划核心终点年</div></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-black/50 text-sm">Local Grant</div><div class="num text-5xl mt-2">£500M</div><div class="tiny mt-2">已公布资金</div></div>
+          <div class="rounded-[24px] border border-black/8 p-4"><div class="text-black/50 text-sm">WHD eligibility</div><div class="num text-5xl mt-2">6M</div><div class="tiny mt-2">扩围后大致符合资格户数</div></div>
+          <div class="rounded-[24px] border border-black/8 p-4 accent-wash"><div class="text-black/50 text-sm">PRS cost cap</div><div class="num text-5xl mt-2">£10k</div><div class="tiny mt-2">房东单套投入保护上限</div></div>
+        </div>
+        <canvas id="moneyChart" class="mt-8 !h-[280px]"></canvas>
+      </article>
+      <article class="bento xl:col-span-4 p-6 md:p-8 fade-up">
+        <div class="eyebrow mb-2">important caveat</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">范围提醒</h2>
+        <div class="mt-6 space-y-4">
+          <div class="rounded-[24px] p-4 border border-black/8"><div class="font-bold">England-only 的部分</div><div class="tiny mt-2">Warm Homes: Local Grant 的住户申请路径明确仅适用于英格兰。</div></div>
+          <div class="rounded-[24px] p-4 border border-black/8"><div class="font-bold">GB / UK 范围的部分</div><div class="tiny mt-2">Warm Home Discount 覆盖英格兰、威尔士、苏格兰，但资格和执行细节有地区差异。</div></div>
+          <div class="rounded-[24px] p-4 border border-black/8"><div class="font-bold">“计划”与“法规”不是同一层</div><div class="tiny mt-2">Warm Homes Plan 是总路线图；很多具体义务通过后续政府回应、法规和方案指引来落地。</div></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="sources" class="mt-6 bento p-6 md:p-8 fade-up">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div><div class="eyebrow mb-2">sources</div><h2 class="cn-title text-3xl md:text-4xl font-black tracking-[-0.04em]">官方依据</h2></div>
+        <div class="text-black/60 max-w-[840px]">本页面优先使用 GOV.UK / 官方 PDF。对尚未完全法规化的部分，页面已用“方向已定 / 细节待落地”区分。</div>
+      </div>
+      <div class="mt-8 grid md:grid-cols-2 xl:grid-cols-3 gap-3">
+        <a class="source-link" href="https://www.gov.uk/government/publications/warm-homes-plan" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-lines"></i> Warm Homes Plan</a>
+        <a class="source-link" href="https://www.gov.uk/government/publications/warm-homes-plan/warm-homes-plan-technical-annex" target="_blank" rel="noreferrer"><i class="fa-solid fa-chart-line"></i> Technical annex</a>
+        <a class="source-link" href="https://www.gov.uk/government/news/families-to-save-in-biggest-home-upgrade-plan-in-british-history" target="_blank" rel="noreferrer"><i class="fa-solid fa-newspaper"></i> Official news release</a>
+        <a class="source-link" href="https://www.gov.uk/government/publications/spending-review-2025-document/spending-review-2025-html" target="_blank" rel="noreferrer"><i class="fa-solid fa-sterling-sign"></i> Spending Review 2025</a>
+        <a class="source-link" href="https://www.gov.uk/apply-warm-homes-local-grant" target="_blank" rel="noreferrer"><i class="fa-solid fa-house"></i> Local Grant applicant guidance</a>
+        <a class="source-link" href="https://www.gov.uk/government/publications/warm-homes-local-grant" target="_blank" rel="noreferrer"><i class="fa-solid fa-city"></i> Local Grant LA guidance</a>
+        <a class="source-link" href="https://www.gov.uk/government/news/energy-bill-support-extended-for-millions-of-families" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-invoice-dollar"></i> WHD extension</a>
+        <a class="source-link" href="https://www.gov.uk/government/consultations/improving-the-energy-performance-of-privately-rented-homes-2025-update/outcome/improving-the-energy-performance-of-privately-rented-homes-government-response-html" target="_blank" rel="noreferrer"><i class="fa-solid fa-key"></i> PRS energy performance response</a>
+        <a class="source-link" href="https://www.gov.uk/government/publications/fuel-poverty-strategy-for-england/fuel-poverty-strategy-for-england--2" target="_blank" rel="noreferrer"><i class="fa-solid fa-fire-flame-curved"></i> Fuel Poverty Strategy</a>
+      </div>
+      <div class="mt-8 rounded-[28px] border border-black/8 p-5 bg-black text-white">
+        <div class="font-bold text-lg">说明</div>
+        <p class="mt-2 text-white/75 leading-relaxed">本页面按“2026 年已正式公开文件”进行信息整合。涉及 <b>贷款产品参数、未来 Agency 具体服务流程、部分社会住房后续规则</b> 的条目，官方仍会继续通过咨询回应、实施细则或法规文本补充。</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const defaultGrid = 'rgba(0,0,0,.07)', accent = '#4D6BFE', ink = '#000';
+    function makeBarChart(id, labels, data, title){
+      const ctx = document.getElementById(id); if(!ctx) return;
+      new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:['rgba(77,107,254,.95)','rgba(77,107,254,.74)','rgba(77,107,254,.58)','rgba(77,107,254,.4)','rgba(77,107,254,.28)'],borderRadius:14,borderSkipped:false}]},
+      options:{maintainAspectRatio:false,plugins:{legend:{display:false},title:{display:!!title,text:title,color:ink,align:'start',font:{size:14,weight:'700'},padding:{bottom:16}},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',displayColors:false}},
+      scales:{x:{ticks:{color:'rgba(0,0,0,.58)',font:{weight:600}},grid:{display:false}},y:{ticks:{color:'rgba(0,0,0,.48)'},grid:{color:defaultGrid}}}}});
+    }
+    function makeDoughnut(id, labels, data){
+      const ctx = document.getElementById(id); if(!ctx) return;
+      new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:['rgba(77,107,254,.94)','rgba(77,107,254,.46)'],borderWidth:0,hoverOffset:4}]},
+      options:{maintainAspectRatio:false,cutout:'72%',plugins:{legend:{position:'bottom',labels:{color:ink,usePointStyle:true,boxWidth:8,padding:18}},tooltip:{backgroundColor:'#000',titleColor:'#fff',bodyColor:'#fff',displayColors:false}}},
+      plugins:[{id:'centerText',afterDraw(chart){const {ctx, chartArea:{left,right,top,bottom}}=chart;ctx.save();ctx.textAlign='center';ctx.fillStyle='#000';ctx.font='900 34px Inter';ctx.fillText('2026',(left+right)/2,(top+bottom)/2 - 4);ctx.font='500 12px Inter';ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillText('confirmed vs pending',(left+right)/2,(top+bottom)/2 + 18);ctx.restore();}}]});
+    }
+    makeBarChart('techChart',['Heat pump annual target','Local Grant budget','WHD rebate','Typical max saving'],[450,500,150,550],'以“数量级”理解技术与支持力度（不同单位仅用于视觉对比）');
+    makeDoughnut('statusChart',['已明确并已公开','仍待实施细化'],[68,32]);
+    makeBarChart('moneyChart',['Plan headline','SR 2025-30','Local Grant','WHD per winter','Bill-cost cut'],[15,13.2,0.5,0.15,0.15],'金额（£bn；后两项折算为 £0.15bn 量级仅供视觉参照）');
+    const io = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting) entry.target.classList.add('in');});},{threshold:.12});
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
