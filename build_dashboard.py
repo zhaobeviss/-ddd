@@ -127,8 +127,25 @@ def load_dashboard_data() -> dict:
 
     top_latest_month = ranked_rows(df, "年月", latest_month)
     top_latest_quarter = ranked_rows(df, "季度", latest_quarter)
-    selector_countries = [row["country"] for row in top_latest_quarter]
-    default_country = selector_countries[0] if selector_countries else ""
+    latest_quarter_country = (
+        df[df["季度"] == latest_quarter]
+        .groupby("贸易伙伴名称", as_index=False)["人民币"]
+        .sum()
+        .rename(columns={"人民币": "latestQuarterRmb"})
+    )
+    all_country_total = (
+        df.groupby("贸易伙伴名称", as_index=False)["人民币"]
+        .sum()
+        .rename(columns={"人民币": "totalRmb"})
+    )
+    selector_countries = (
+        all_country_total.merge(latest_quarter_country, on="贸易伙伴名称", how="left")
+        .fillna({"latestQuarterRmb": 0})
+        .sort_values(["latestQuarterRmb", "totalRmb", "贸易伙伴名称"], ascending=[False, False, True])
+        ["贸易伙伴名称"]
+        .tolist()
+    )
+    default_country = top_latest_quarter[0]["country"] if top_latest_quarter else (selector_countries[0] if selector_countries else "")
 
     monthly_all = [
         {"period": row["年月"], "amountYi": to_yi(row["人民币"])}
@@ -169,6 +186,7 @@ def load_dashboard_data() -> dict:
             "topLatestQuarter": top_latest_quarter,
             "selector": selector_countries,
             "defaultCountry": default_country,
+            "countryCount": len(selector_countries),
             "monthPeriods": months,
             "quarterPeriods": quarters,
             "monthSeries": tidy_series(df, "年月", months, selector_countries),
@@ -826,7 +844,7 @@ HTML_TEMPLATE = """<!doctype html>
             <div class="panel-head">
               <div class="panel-title">
                 <h2>区域国家出口趋势</h2>
-                <p id="countrySubtitle">Top 15 贸易伙伴范围 · 默认展示最新季度第一名国家。</p>
+                <p id="countrySubtitle">全部贸易伙伴范围 · 默认展示最新季度第一名国家。</p>
               </div>
               <div class="segmented" aria-label="国家图周期切换">
                 <button id="countryMonthBtn" class="active" type="button">月</button>
