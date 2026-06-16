@@ -1,0 +1,14 @@
+.vercel/
+logs/
+.server.pid
+__pycache__/
+*.pyc
+
+# Avoid publishing raw source spreadsheets by accident.
+*.xlsx
+*.xls
+~$*
+
+# Local secrets.
+.env
+.env.*

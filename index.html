@@ -1,0 +1,1246 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>海关出口金额 BI 看板</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-2: #f0f4f8;
+      --surface-3: #e8eef6;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d9e1ec;
+      --blue: #2563eb;
+      --green: #0f766e;
+      --amber: #b7791f;
+      --red: #c2410c;
+      --purple: #6d5dfc;
+      --shadow: 0 14px 34px rgba(23, 32, 51, 0.08);
+      font-family: Inter, "Microsoft YaHei", "PingFang SC", "Noto Sans SC", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 22px;
+    }
+
+    .shell {
+      width: min(1520px, 100%);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .title-group h1 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.22;
+      font-weight: 760;
+    }
+
+    .title-group p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .status-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      white-space: nowrap;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .kpi,
+    .panel,
+    .side-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi {
+      min-height: 118px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .kpi-value {
+      margin-top: 12px;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 760;
+      word-break: break-word;
+    }
+
+    .kpi-sub {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .positive {
+      color: var(--green);
+    }
+
+    .negative {
+      color: var(--red);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .main-stack {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 16px;
+      position: sticky;
+      top: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .panel-title h2,
+    .side-panel h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 730;
+    }
+
+    .panel-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .segmented {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-2);
+      flex: 0 0 auto;
+    }
+
+    .segmented button {
+      min-width: 54px;
+      height: 30px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: #344054;
+      cursor: pointer;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    .segmented button.active {
+      background: var(--surface);
+      color: var(--blue);
+      box-shadow: 0 2px 8px rgba(23, 32, 51, 0.08);
+      font-weight: 700;
+    }
+
+    .chart {
+      width: 100%;
+      height: 520px;
+    }
+
+    .region-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .region-card {
+      min-height: 104px;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .region-card-label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .region-card-value {
+      margin-top: 10px;
+      color: var(--text);
+      font-size: 23px;
+      line-height: 1;
+      font-weight: 760;
+      word-break: break-word;
+    }
+
+    .region-card-sub {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    #countryChart {
+      height: 610px;
+    }
+
+    .country-tools {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .select-box {
+      position: relative;
+      min-width: 0;
+    }
+
+    .select-trigger {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .trigger-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    .chevron {
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid var(--muted);
+      border-bottom: 2px solid var(--muted);
+      transform: rotate(45deg);
+      margin-bottom: 4px;
+      flex: 0 0 auto;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      z-index: 30;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 18px 48px rgba(23, 32, 51, 0.18);
+      padding: 10px;
+    }
+
+    .dropdown.open {
+      display: block;
+    }
+
+    .search {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 0 10px;
+      outline: none;
+      margin-bottom: 8px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .action-btn {
+      flex: 1;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface);
+      color: #344054;
+      cursor: pointer;
+    }
+
+    .action-btn.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .country-list {
+      max-height: 330px;
+      overflow: auto;
+      border-top: 1px solid var(--line);
+      padding-top: 6px;
+    }
+
+    .country-option {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 36px;
+      padding: 6px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .country-option:hover {
+      background: var(--surface-2);
+    }
+
+    .country-option input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .country-name {
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .selected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 30px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+      min-height: 28px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: #344054;
+      font-size: 12px;
+    }
+
+    .tag span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tag button {
+      width: 18px;
+      height: 18px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(102, 112, 133, 0.18);
+      cursor: pointer;
+      padding: 0;
+      line-height: 18px;
+      color: #344054;
+    }
+
+    .side-panel {
+      padding: 16px;
+    }
+
+    .side-panel h2 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .side-panel p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      min-height: 30px;
+      color: #344054;
+      font-size: 12px;
+    }
+
+    .rank-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .rank-value {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .source-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .empty-state {
+      padding: 18px 4px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side-stack {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .region-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding: 14px;
+      }
+
+      .topbar,
+      .panel-head,
+      .country-tools {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-head {
+        display: grid;
+      }
+
+      .status-strip {
+        justify-content: flex-start;
+      }
+
+      .kpis,
+      .region-cards,
+      .side-stack {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-value {
+        font-size: 26px;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .chart {
+        height: 450px;
+      }
+
+      #countryChart {
+        height: 560px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="shell">
+      <header class="topbar">
+        <div class="title-group">
+          <h1>海关出口金额 BI 看板</h1>
+          <p>只展示人民币出口金额，统一换算为亿元</p>
+        </div>
+        <div class="status-strip">
+          <span class="badge" id="periodBadge"></span>
+          <span class="badge">金额单位：亿元</span>
+          <span class="badge" id="sourceBadge"></span>
+        </div>
+      </header>
+
+      <section class="kpis" aria-label="关键金额变化">
+        <article class="kpi">
+          <div>
+            <div class="kpi-label">最新月出口额</div>
+            <div class="kpi-value" id="latestMonthAmount">--</div>
+          </div>
+          <div class="kpi-sub" id="latestMonthLabel">--</div>
+        </article>
+        <article class="kpi">
+          <div>
+            <div class="kpi-label">较上月变化</div>
+            <div class="kpi-value" id="monthDelta">--</div>
+          </div>
+          <div class="kpi-sub" id="monthDeltaLabel">--</div>
+        </article>
+        <article class="kpi">
+          <div>
+            <div class="kpi-label">最新季度出口额</div>
+            <div class="kpi-value" id="latestQuarterAmount">--</div>
+          </div>
+          <div class="kpi-sub" id="latestQuarterLabel">--</div>
+        </article>
+        <article class="kpi">
+          <div>
+            <div class="kpi-label">较去年同季变化</div>
+            <div class="kpi-value" id="quarterDelta">--</div>
+          </div>
+          <div class="kpi-sub" id="quarterDeltaLabel">--</div>
+        </article>
+      </section>
+
+      <div class="grid">
+        <main class="main-stack">
+          <section class="panel" aria-label="所有国家合计出口金额">
+            <div class="panel-head">
+              <div class="panel-title">
+                <h2>所有国家合计出口额</h2>
+                <p id="allSubtitle">默认按月展示，可切换季度；柱状图显示每个周期的完整金额。</p>
+              </div>
+              <div class="segmented" aria-label="合计图周期切换">
+                <button id="allMonthBtn" class="active" type="button">月</button>
+                <button id="allQuarterBtn" type="button">季度</button>
+              </div>
+            </div>
+            <div id="allChart" class="chart" role="img" aria-label="所有国家合计出口额柱状图"></div>
+          </section>
+
+          <section class="region-cards" aria-label="区域国家金额变化">
+            <article class="region-card">
+              <div class="region-card-label">当月环比</div>
+              <div class="region-card-value" id="regionMonthMom">--</div>
+              <div class="region-card-sub" id="regionMonthMomSub">--</div>
+            </article>
+            <article class="region-card">
+              <div class="region-card-label">当月同比</div>
+              <div class="region-card-value" id="regionMonthYoy">--</div>
+              <div class="region-card-sub" id="regionMonthYoySub">--</div>
+            </article>
+            <article class="region-card">
+              <div class="region-card-label">当季环比</div>
+              <div class="region-card-value" id="regionQuarterQoq">--</div>
+              <div class="region-card-sub" id="regionQuarterQoqSub">--</div>
+            </article>
+            <article class="region-card">
+              <div class="region-card-label">当季同比</div>
+              <div class="region-card-value" id="regionQuarterYoy">--</div>
+              <div class="region-card-sub" id="regionQuarterYoySub">--</div>
+            </article>
+          </section>
+
+          <section class="panel" aria-label="区域国家出口金额趋势">
+            <div class="panel-head">
+              <div class="panel-title">
+                <h2>区域国家出口趋势</h2>
+                <p id="countrySubtitle">Top 15 贸易伙伴范围 · 默认展示最新季度第一名国家。</p>
+              </div>
+              <div class="segmented" aria-label="国家图周期切换">
+                <button id="countryMonthBtn" class="active" type="button">月</button>
+                <button id="countryQuarterBtn" type="button">季度</button>
+              </div>
+            </div>
+
+            <div class="country-tools">
+              <div class="select-box" id="selectBox">
+                <button class="select-trigger" id="selectTrigger" type="button" aria-expanded="false">
+                  <span class="trigger-text" id="triggerText">--</span>
+                  <span class="chevron" aria-hidden="true"></span>
+                </button>
+                <div class="dropdown" id="dropdown">
+                  <input class="search" id="countrySearch" type="search" placeholder="搜索区域国家" autocomplete="off">
+                  <div class="actions">
+                    <button class="action-btn primary" id="selectDefault" type="button">恢复默认</button>
+                    <button class="action-btn" id="selectAll" type="button">选择全部</button>
+                    <button class="action-btn" id="clearSelected" type="button">清空</button>
+                  </div>
+                  <div class="country-list" id="countryList"></div>
+                </div>
+              </div>
+            </div>
+            <div class="selected-list" id="selectedList"></div>
+            <div id="countryChart" class="chart" role="img" aria-label="区域国家出口额曲线图"></div>
+          </section>
+        </main>
+
+        <aside class="side-stack" aria-label="Top 15 国家">
+          <section class="side-panel">
+            <h2 id="latestMonthTopTitle">当月出口额 Top 15</h2>
+            <p>仅显示贸易伙伴名称和出口额。</p>
+            <div class="rank-list" id="latestMonthTop"></div>
+          </section>
+
+          <section class="side-panel">
+            <h2 id="latestQuarterTopTitle">Q1 出口额 Top 15</h2>
+            <p>仅显示贸易伙伴名称和出口额。</p>
+            <div class="rank-list" id="latestQuarterTop"></div>
+          </section>
+
+          <section class="side-panel">
+            <h2>数据口径</h2>
+            <p>金额字段取“人民币”，页面内所有金额均为亿元；贸易伙伴仅显示名称。</p>
+            <div class="source-note" id="sourceNote"></div>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const BI_DATA = {"meta":{"sourceFile":"海关出口数据2025-2026.Q1.xlsx","sourcePath":"C:\\Users\\zhaob\\Desktop\\海关数据\\海关出口数据2025-2026.Q1.xlsx","sheet":"数据导出","latestMonth":"2026-03","latestQuarter":"2026Q1","previousMonth":"2026-02","previousQuarter":"2025Q4","yoyMonth":"2025-03","yoyQuarter":"2025Q1","latestMonthAmountYi":52.6465,"latestMonthDeltaYi":-4.6417,"latestQuarterAmountYi":169.4395,"latestQuarterDeltaYi":47.9622,"unit":"亿元"},"all":{"month":[{"period":"2025-01","amountYi":43.7547},{"period":"2025-02","amountYi":32.4828},{"period":"2025-03","amountYi":45.2398},{"period":"2025-04","amountYi":57.8448},{"period":"2025-05","amountYi":59.3817},{"period":"2025-06","amountYi":65.6725},{"period":"2025-07","amountYi":65.1225},{"period":"2025-08","amountYi":62.9214},{"period":"2025-09","amountYi":50.8491},{"period":"2025-10","amountYi":48.2139},{"period":"2025-11","amountYi":54.4643},{"period":"2025-12","amountYi":59.4525},{"period":"2026-01","amountYi":59.5048},{"period":"2026-02","amountYi":57.2882},{"period":"2026-03","amountYi":52.6465}],"quarter":[{"period":"2025Q1","amountYi":121.4773},{"period":"2025Q2","amountYi":182.899},{"period":"2025Q3","amountYi":178.893},{"period":"2025Q4","amountYi":162.1307},{"period":"2026Q1","amountYi":169.4395}]},"countries":{"topLatestMonth":[{"country":"荷兰","amountYi":7.7347},{"country":"德国","amountYi":5.1843},{"country":"澳大利亚","amountYi":4.3831},{"country":"印度","amountYi":2.9277},{"country":"日本","amountYi":2.451},{"country":"巴西","amountYi":2.2348},{"country":"尼日利亚","amountYi":1.7751},{"country":"意大利","amountYi":1.6697},{"country":"匈牙利","amountYi":1.3579},{"country":"沙特阿拉伯","amountYi":1.2826},{"country":"中国香港","amountYi":1.2582},{"country":"美国","amountYi":1.062},{"country":"英国","amountYi":0.9631},{"country":"南非","amountYi":0.9189},{"country":"越南","amountYi":0.8837}],"topLatestQuarter":[{"country":"荷兰","amountYi":25.9651},{"country":"德国","amountYi":14.2078},{"country":"澳大利亚","amountYi":13.1836},{"country":"印度","amountYi":10.5413},{"country":"巴西","amountYi":7.2192},{"country":"阿联酋","amountYi":6.5003},{"country":"日本","amountYi":5.9862},{"country":"尼日利亚","amountYi":5.4627},{"country":"意大利","amountYi":4.5391},{"country":"匈牙利","amountYi":4.359},{"country":"美国","amountYi":3.7727},{"country":"沙特阿拉伯","amountYi":3.6558},{"country":"南非","amountYi":3.5166},{"country":"巴基斯坦","amountYi":3.2441},{"country":"中国香港","amountYi":2.972}],"selector":["荷兰","德国","澳大利亚","印度","巴西","阿联酋","日本","尼日利亚","意大利","匈牙利","美国","沙特阿拉伯","南非","巴基斯坦","中国香港"],"defaultCountry":"荷兰","monthPeriods":["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03"],"quarterPeriods":["2025Q1","2025Q2","2025Q3","2025Q4","2026Q1"],"monthSeries":{"荷兰":[5.5322,4.4541,7.0833,11.6172,9.6829,12.7734,16.6274,15.2439,8.6232,6.8198,6.3796,8.1299,10.058,8.1725,7.7347],"德国":[1.6947,1.6131,4.4578,6.627,6.0567,3.4328,3.1663,3.5745,2.9691,2.3963,3.7422,4.6166,5.4833,3.5402,5.1843],"澳大利亚":[1.9633,1.1207,1.2578,1.2785,1.24,2.3564,3.8803,4.6708,4.4679,4.1599,4.6661,4.2084,5.0603,3.7402,4.3831],"印度":[3.8036,3.018,3.2549,2.7283,3.1555,3.4223,3.0201,3.6608,2.6535,1.9382,1.9626,2.2756,2.9704,4.6432,2.9277],"巴西":[3.409,2.8117,2.6911,3.042,3.2862,3.4256,3.5441,3.2186,2.0235,2.9899,2.999,1.7331,2.2828,2.7016,2.2348],"阿联酋":[0.7836,1.0029,0.9744,1.6598,2.3466,2.1273,3.42,4.1084,2.8147,2.1364,3.6426,1.5185,2.4238,3.6863,0.3903],"日本":[1.0717,0.2482,0.6207,0.7344,1.1693,1.695,1.2171,1.0407,1.433,1.5342,2.281,2.2717,2.0499,1.4853,2.451],"尼日利亚":[0.804,0.5121,0.6205,0.8364,0.9098,0.8447,1.1312,1.0798,1.0585,0.9291,1.0681,1.243,1.6969,1.9908,1.7751],"意大利":[0.3173,0.2741,0.6852,0.7426,0.5312,0.6525,0.5481,0.9058,1.1057,1.3044,0.7817,2.3625,1.0602,1.8093,1.6697],"匈牙利":[1.0823,0.7513,0.6497,1.4389,0.4868,1.1055,0.6885,0.9052,1.2271,1.1632,0.6963,0.9832,2.1555,0.8456,1.3579],"美国":[2.155,0.7724,1.5951,1.2428,1.2996,2.0172,2.1328,1.5451,1.378,1.6349,2.0237,2.6998,1.2492,1.4615,1.062],"沙特阿拉伯":[1.2657,1.072,0.0867,0.1065,1.9475,4.6919,1.4823,1.0248,0.098,0.8378,0.3968,0.7063,1.5749,0.7984,1.2826],"南非":[0.7123,1.6756,0.9053,1.6022,1.2038,0.8257,0.53,0.8785,1.1039,1.5764,1.2519,1.1602,1.2942,1.3035,0.9189],"巴基斯坦":[2.1634,1.8806,2.8579,3.5797,2.8673,2.408,1.4686,1.1142,0.834,0.7124,0.6626,0.5114,0.8636,1.5552,0.8252],"中国香港":[0.378,0.4987,0.3512,0.5048,0.71,1.0348,0.819,0.6941,1.0442,0.8033,0.437,0.735,0.6826,1.0312,1.2582]},"quarterSeries":{"荷兰":[17.0695,34.0736,40.4945,21.3292,25.9651],"德国":[7.7657,16.1165,9.71,10.7551,14.2078],"澳大利亚":[4.3417,4.8749,13.0189,13.0343,13.1836],"印度":[10.0765,9.3061,9.3344,6.1764,10.5413],"巴西":[8.9117,9.7538,8.7862,7.722,7.2192],"阿联酋":[2.7609,6.1336,10.3431,7.2975,6.5003],"日本":[1.9405,3.5987,3.6908,6.0869,5.9862],"尼日利亚":[1.9366,2.5908,3.2696,3.2403,5.4627],"意大利":[1.2766,1.9263,2.5596,4.4486,4.5391],"匈牙利":[2.4833,3.0313,2.8209,2.8427,4.359],"美国":[4.5224,4.5596,5.0558,6.3584,3.7727],"沙特阿拉伯":[2.4245,6.7459,2.6051,1.9409,3.6558],"南非":[3.2931,3.6317,2.5123,3.9885,3.5166],"巴基斯坦":[6.9018,8.855,3.4168,1.8864,3.2441],"中国香港":[1.2278,2.2497,2.5573,1.9753,2.972]}}};
+    const amountFormatter = new Intl.NumberFormat("zh-CN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    const compactFormatter = new Intl.NumberFormat("zh-CN", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+
+    const palette = [
+      "#2563eb", "#0f766e", "#b7791f", "#c2410c", "#6d5dfc",
+      "#0891b2", "#9333ea", "#ca8a04", "#dc2626", "#16a34a",
+      "#475569", "#be185d", "#64748b", "#0284c7", "#7c3aed"
+    ];
+
+    const state = {
+      allMode: "month",
+      countryMode: "month",
+      allHighlight: null,
+      countryHighlight: null,
+      selectedCountries: new Set([BI_DATA.countries.defaultCountry])
+    };
+
+    const dom = {
+      periodBadge: document.getElementById("periodBadge"),
+      sourceBadge: document.getElementById("sourceBadge"),
+      latestMonthAmount: document.getElementById("latestMonthAmount"),
+      latestMonthLabel: document.getElementById("latestMonthLabel"),
+      monthDelta: document.getElementById("monthDelta"),
+      monthDeltaLabel: document.getElementById("monthDeltaLabel"),
+      latestQuarterAmount: document.getElementById("latestQuarterAmount"),
+      latestQuarterLabel: document.getElementById("latestQuarterLabel"),
+      quarterDelta: document.getElementById("quarterDelta"),
+      quarterDeltaLabel: document.getElementById("quarterDeltaLabel"),
+      allSubtitle: document.getElementById("allSubtitle"),
+      allMonthBtn: document.getElementById("allMonthBtn"),
+      allQuarterBtn: document.getElementById("allQuarterBtn"),
+      countrySubtitle: document.getElementById("countrySubtitle"),
+      regionMonthMom: document.getElementById("regionMonthMom"),
+      regionMonthMomSub: document.getElementById("regionMonthMomSub"),
+      regionMonthYoy: document.getElementById("regionMonthYoy"),
+      regionMonthYoySub: document.getElementById("regionMonthYoySub"),
+      regionQuarterQoq: document.getElementById("regionQuarterQoq"),
+      regionQuarterQoqSub: document.getElementById("regionQuarterQoqSub"),
+      regionQuarterYoy: document.getElementById("regionQuarterYoy"),
+      regionQuarterYoySub: document.getElementById("regionQuarterYoySub"),
+      countryMonthBtn: document.getElementById("countryMonthBtn"),
+      countryQuarterBtn: document.getElementById("countryQuarterBtn"),
+      selectBox: document.getElementById("selectBox"),
+      selectTrigger: document.getElementById("selectTrigger"),
+      triggerText: document.getElementById("triggerText"),
+      dropdown: document.getElementById("dropdown"),
+      countrySearch: document.getElementById("countrySearch"),
+      countryList: document.getElementById("countryList"),
+      selectDefault: document.getElementById("selectDefault"),
+      selectAll: document.getElementById("selectAll"),
+      clearSelected: document.getElementById("clearSelected"),
+      selectedList: document.getElementById("selectedList"),
+      latestMonthTopTitle: document.getElementById("latestMonthTopTitle"),
+      latestQuarterTopTitle: document.getElementById("latestQuarterTopTitle"),
+      latestMonthTop: document.getElementById("latestMonthTop"),
+      latestQuarterTop: document.getElementById("latestQuarterTop"),
+      sourceNote: document.getElementById("sourceNote")
+    };
+
+    const allChart = echarts.init(document.getElementById("allChart"), null, { renderer: "canvas" });
+    const countryChart = echarts.init(document.getElementById("countryChart"), null, { renderer: "canvas" });
+
+    function formatAmount(value) {
+      return `${amountFormatter.format(Number(value || 0))} 亿元`;
+    }
+
+    function formatCompact(value) {
+      return `${compactFormatter.format(Number(value || 0))} 亿元`;
+    }
+
+    function signedClass(value) {
+      if (value === null || value === undefined || Number(value) === 0) return "";
+      return Number(value) > 0 ? "positive" : "negative";
+    }
+
+    function formatSignedAmount(value) {
+      if (value === null || value === undefined) return "--";
+      const numeric = Number(value);
+      const sign = numeric > 0 ? "+" : "";
+      return `${sign}${formatAmount(numeric)}`;
+    }
+
+    function formatPct(value) {
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return "--";
+      const numeric = Number(value);
+      const sign = numeric > 0 ? "+" : "";
+      return `${sign}${(numeric * 100).toFixed(2)}%`;
+    }
+
+    function calcDelta(current, prior) {
+      if (prior === null || prior === undefined) return null;
+      return Number(current || 0) - Number(prior || 0);
+    }
+
+    function calcPct(current, prior) {
+      if (!prior) return null;
+      return (Number(current || 0) - Number(prior)) / Number(prior);
+    }
+
+    function setChangeCard(valueNode, subNode, deltaValue, pctValue, currentPeriod, priorPeriod, currentAmount) {
+      valueNode.textContent = formatSignedAmount(deltaValue);
+      valueNode.className = `region-card-value ${signedClass(deltaValue)}`.trim();
+      subNode.textContent = priorPeriod
+        ? `${formatPct(pctValue)} · ${currentPeriod} 对比 ${priorPeriod} · 当前 ${formatAmount(currentAmount)}`
+        : "--";
+    }
+
+    function setMode(buttons, activeMode) {
+      buttons.month.classList.toggle("active", activeMode === "month");
+      buttons.quarter.classList.toggle("active", activeMode === "quarter");
+    }
+
+    function updateKpis() {
+      const meta = BI_DATA.meta;
+      dom.periodBadge.textContent = `${BI_DATA.all.month[0].period} 至 ${meta.latestMonth}`;
+      dom.sourceBadge.textContent = meta.sourceFile;
+      dom.latestMonthAmount.textContent = formatAmount(meta.latestMonthAmountYi);
+      dom.latestMonthLabel.textContent = meta.latestMonth;
+      dom.monthDelta.textContent = formatSignedAmount(meta.latestMonthDeltaYi);
+      dom.monthDelta.className = `kpi-value ${signedClass(meta.latestMonthDeltaYi)}`.trim();
+      dom.monthDeltaLabel.textContent = meta.previousMonth ? `对比 ${meta.previousMonth}` : "--";
+      dom.latestQuarterAmount.textContent = formatAmount(meta.latestQuarterAmountYi);
+      dom.latestQuarterLabel.textContent = meta.latestQuarter;
+      dom.quarterDelta.textContent = formatSignedAmount(meta.latestQuarterDeltaYi);
+      dom.quarterDelta.className = `kpi-value ${signedClass(meta.latestQuarterDeltaYi)}`.trim();
+      dom.quarterDeltaLabel.textContent = meta.yoyQuarter ? `对比 ${meta.yoyQuarter}` : "--";
+      dom.latestMonthTopTitle.textContent = `${meta.latestMonth} 出口额 Top 15`;
+      dom.latestQuarterTopTitle.textContent = `${meta.latestQuarter} 出口额 Top 15`;
+      dom.sourceNote.textContent = `${meta.sourceFile} / ${meta.sheet}`;
+    }
+
+    function allTooltip(params) {
+      const item = Array.isArray(params) ? params[0] : params;
+      return `<strong>${item.name}</strong><br>出口额：${formatAmount(item.value)}`;
+    }
+
+    function renderAllChart() {
+      const mode = state.allMode;
+      const rows = BI_DATA.all[mode];
+      const labels = rows.map((row) => row.period);
+      const values = rows.map((row) => {
+        const active = !state.allHighlight || state.allHighlight === row.period;
+        return {
+          name: row.period,
+          value: row.amountYi,
+          itemStyle: {
+            color: active ? "#2563eb" : "#cbd5e1",
+            opacity: active ? 1 : 0.34,
+            borderColor: active && state.allHighlight ? "#172033" : "transparent",
+            borderWidth: active && state.allHighlight ? 1 : 0
+          },
+          label: {
+            color: active ? "#344054" : "#98a2b3"
+          }
+        };
+      });
+      const isQuarter = mode === "quarter";
+
+      setMode({ month: dom.allMonthBtn, quarter: dom.allQuarterBtn }, mode);
+      dom.allSubtitle.textContent = isQuarter
+        ? "所有国家按季度加总，金额单位为亿元。"
+        : "所有国家按月加总，金额单位为亿元。";
+
+      allChart.setOption({
+        animationDuration: 350,
+        grid: { top: 42, right: 22, bottom: isQuarter ? 54 : 78, left: 70, containLabel: true },
+        tooltip: { trigger: "axis", axisPointer: { type: "shadow" }, confine: true, formatter: allTooltip },
+        xAxis: {
+          type: "category",
+          data: labels,
+          axisTick: { alignWithLabel: true },
+          axisLabel: {
+            interval: 0,
+            rotate: isQuarter ? 0 : 35,
+            color: "#667085",
+            fontSize: 12
+          },
+          axisLine: { lineStyle: { color: "#d9e1ec" } }
+        },
+        yAxis: {
+          type: "value",
+          name: "亿元",
+          nameTextStyle: { color: "#667085" },
+          axisLabel: { color: "#667085", formatter: (value) => compactFormatter.format(value) },
+          splitLine: { lineStyle: { color: "#edf2f7" } }
+        },
+        series: [{
+          name: "所有国家合计",
+          type: "bar",
+          barMaxWidth: 42,
+          data: values,
+          itemStyle: { color: "#2563eb", borderRadius: [4, 4, 0, 0] },
+          label: {
+            show: true,
+            position: "top",
+            formatter: (item) => amountFormatter.format(item.value),
+            color: "#344054",
+            fontSize: 11
+          }
+        }]
+      }, true);
+    }
+
+    function countryTooltip(params) {
+      const rows = Array.isArray(params) ? params : [params];
+      const lines = rows
+        .map((item) => `<div style="display:flex;gap:18px;justify-content:space-between;min-width:220px;">
+          <span>${item.marker}${item.seriesName}</span><strong>${formatAmount(item.value)}</strong>
+        </div>`)
+        .join("");
+      return `<strong>${rows[0].axisValue}</strong>${lines}`;
+    }
+
+    function activeCountryList() {
+      return Array.from(state.selectedCountries).filter(Boolean);
+    }
+
+    function sumSelectedAt(mode, period) {
+      if (!period) return null;
+      const selected = activeCountryList();
+      if (!selected.length) return 0;
+      const periods = mode === "month" ? BI_DATA.countries.monthPeriods : BI_DATA.countries.quarterPeriods;
+      const seriesMap = mode === "month" ? BI_DATA.countries.monthSeries : BI_DATA.countries.quarterSeries;
+      const periodIndex = periods.indexOf(period);
+      if (periodIndex < 0) return null;
+      return selected.reduce((sum, country) => sum + Number(seriesMap[country]?.[periodIndex] || 0), 0);
+    }
+
+    function updateRegionCards() {
+      const meta = BI_DATA.meta;
+      const monthCurrent = sumSelectedAt("month", meta.latestMonth);
+      const monthPrevious = sumSelectedAt("month", meta.previousMonth);
+      const monthYoy = sumSelectedAt("month", meta.yoyMonth);
+      const quarterCurrent = sumSelectedAt("quarter", meta.latestQuarter);
+      const quarterPrevious = sumSelectedAt("quarter", meta.previousQuarter);
+      const quarterYoy = sumSelectedAt("quarter", meta.yoyQuarter);
+
+      setChangeCard(
+        dom.regionMonthMom,
+        dom.regionMonthMomSub,
+        calcDelta(monthCurrent, monthPrevious),
+        calcPct(monthCurrent, monthPrevious),
+        meta.latestMonth,
+        meta.previousMonth,
+        monthCurrent
+      );
+      setChangeCard(
+        dom.regionMonthYoy,
+        dom.regionMonthYoySub,
+        calcDelta(monthCurrent, monthYoy),
+        calcPct(monthCurrent, monthYoy),
+        meta.latestMonth,
+        meta.yoyMonth,
+        monthCurrent
+      );
+      setChangeCard(
+        dom.regionQuarterQoq,
+        dom.regionQuarterQoqSub,
+        calcDelta(quarterCurrent, quarterPrevious),
+        calcPct(quarterCurrent, quarterPrevious),
+        meta.latestQuarter,
+        meta.previousQuarter,
+        quarterCurrent
+      );
+      setChangeCard(
+        dom.regionQuarterYoy,
+        dom.regionQuarterYoySub,
+        calcDelta(quarterCurrent, quarterYoy),
+        calcPct(quarterCurrent, quarterYoy),
+        meta.latestQuarter,
+        meta.yoyQuarter,
+        quarterCurrent
+      );
+    }
+
+    function renderCountryChart() {
+      const mode = state.countryMode;
+      const periods = mode === "month" ? BI_DATA.countries.monthPeriods : BI_DATA.countries.quarterPeriods;
+      const seriesMap = mode === "month" ? BI_DATA.countries.monthSeries : BI_DATA.countries.quarterSeries;
+      const selected = activeCountryList();
+      const isQuarter = mode === "quarter";
+
+      setMode({ month: dom.countryMonthBtn, quarter: dom.countryQuarterBtn }, mode);
+      dom.countrySubtitle.textContent = `${selected.length || 0} 个国家 · ${isQuarter ? "季度" : "月度"}出口额趋势，金额单位为亿元。`;
+
+      countryChart.setOption({
+        animationDuration: 350,
+        color: palette,
+        grid: { top: selected.length > 1 ? 92 : 54, right: 26, bottom: isQuarter ? 60 : 82, left: 70, containLabel: true },
+        legend: {
+          show: selected.length > 1,
+          type: "scroll",
+          top: 4,
+          left: 8,
+          right: 8,
+          height: 56,
+          textStyle: { color: "#344054", fontSize: 12 }
+        },
+        tooltip: { trigger: "axis", confine: true, formatter: countryTooltip },
+        xAxis: {
+          type: "category",
+          data: periods,
+          boundaryGap: false,
+          axisLabel: { interval: 0, rotate: isQuarter ? 0 : 35, color: "#667085", fontSize: 12 },
+          axisLine: { lineStyle: { color: "#d9e1ec" } }
+        },
+        yAxis: {
+          type: "value",
+          name: "亿元",
+          nameTextStyle: { color: "#667085" },
+          axisLabel: { color: "#667085", formatter: (value) => compactFormatter.format(value) },
+          splitLine: { lineStyle: { color: "#edf2f7" } }
+        },
+        series: selected.map((country, index) => {
+          const color = palette[index % palette.length];
+          const data = (seriesMap[country] || periods.map(() => 0)).map((value, periodIndex) => {
+            const period = periods[periodIndex];
+            const active = !state.countryHighlight || state.countryHighlight === period;
+            return {
+              name: period,
+              value,
+              symbolSize: active && state.countryHighlight ? 11 : 7,
+              itemStyle: {
+                color: active ? color : "#cbd5e1",
+                opacity: active ? 1 : 0.28,
+                borderColor: active && state.countryHighlight ? "#172033" : color,
+                borderWidth: active && state.countryHighlight ? 1.5 : 0
+              },
+              label: {
+                color: active ? "#344054" : "#98a2b3"
+              }
+            };
+          });
+          const markLine = state.countryHighlight && index === 0
+            ? {
+                symbol: ["none", "none"],
+                label: { show: false },
+                lineStyle: { color: "#172033", width: 1, opacity: 0.34 },
+                data: [{ xAxis: state.countryHighlight }]
+              }
+            : undefined;
+
+          return {
+            name: country,
+            type: "line",
+            smooth: true,
+            symbol: "circle",
+            symbolSize: 7,
+            connectNulls: true,
+            data,
+            lineStyle: { width: 3, opacity: state.countryHighlight ? 0.58 : 1 },
+            itemStyle: { color },
+            label: {
+              show: true,
+              position: index % 2 === 0 ? "top" : "bottom",
+              formatter: (item) => amountFormatter.format(item.value),
+              color: "#344054",
+              fontSize: 10
+            },
+            labelLayout: { hideOverlap: false },
+            emphasis: { focus: "series" },
+            markLine
+          };
+        })
+      }, true);
+    }
+
+    function renderRanking(container, rows) {
+      container.innerHTML = "";
+      rows.forEach((row) => {
+        const div = document.createElement("div");
+        div.className = "rank-row";
+        const name = document.createElement("span");
+        name.className = "rank-name";
+        name.title = row.country;
+        name.textContent = row.country;
+        const amount = document.createElement("span");
+        amount.className = "rank-value";
+        amount.textContent = formatCompact(row.amountYi);
+        div.append(name, amount);
+        container.appendChild(div);
+      });
+    }
+
+    function updateTrigger() {
+      const selected = activeCountryList();
+      if (!selected.length) {
+        dom.triggerText.textContent = "未选择国家";
+        return;
+      }
+      const preview = selected.slice(0, 3).join("、");
+      dom.triggerText.textContent = selected.length > 3 ? `${preview} 等 ${selected.length} 个` : preview;
+    }
+
+    function updateSelectedTags() {
+      dom.selectedList.innerHTML = "";
+      const selected = activeCountryList();
+      if (!selected.length) {
+        const tag = document.createElement("div");
+        tag.className = "tag";
+        tag.innerHTML = "<span>未选择国家</span>";
+        dom.selectedList.appendChild(tag);
+        return;
+      }
+      selected.forEach((country) => {
+        const tag = document.createElement("div");
+        tag.className = "tag";
+        const label = document.createElement("span");
+        label.textContent = country;
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.setAttribute("aria-label", `移除 ${country}`);
+        remove.textContent = "×";
+        remove.addEventListener("click", () => {
+          state.selectedCountries.delete(country);
+          refreshCountry();
+        });
+        tag.append(label, remove);
+        dom.selectedList.appendChild(tag);
+      });
+    }
+
+    function renderCountryList() {
+      const query = dom.countrySearch.value.trim().toLowerCase();
+      const countries = BI_DATA.countries.selector.filter((country) => country.toLowerCase().includes(query));
+      dom.countryList.innerHTML = "";
+
+      if (!countries.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "无匹配国家";
+        dom.countryList.appendChild(empty);
+        return;
+      }
+
+      countries.forEach((country) => {
+        const label = document.createElement("label");
+        label.className = "country-option";
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = state.selectedCountries.has(country);
+        checkbox.addEventListener("change", () => {
+          if (checkbox.checked) {
+            state.selectedCountries.add(country);
+          } else {
+            state.selectedCountries.delete(country);
+          }
+          refreshCountry();
+        });
+        const name = document.createElement("span");
+        name.className = "country-name";
+        name.textContent = country;
+        label.append(checkbox, name);
+        dom.countryList.appendChild(label);
+      });
+    }
+
+    function toggleDropdown(forceOpen) {
+      const open = forceOpen ?? !dom.dropdown.classList.contains("open");
+      dom.dropdown.classList.toggle("open", open);
+      dom.selectTrigger.setAttribute("aria-expanded", String(open));
+      if (open) dom.countrySearch.focus();
+    }
+
+    function refreshCountry() {
+      updateTrigger();
+      updateSelectedTags();
+      renderCountryList();
+      updateRegionCards();
+      renderCountryChart();
+    }
+
+    dom.allMonthBtn.addEventListener("click", () => {
+      state.allMode = "month";
+      state.allHighlight = null;
+      renderAllChart();
+    });
+    dom.allQuarterBtn.addEventListener("click", () => {
+      state.allMode = "quarter";
+      state.allHighlight = null;
+      renderAllChart();
+    });
+    dom.countryMonthBtn.addEventListener("click", () => {
+      state.countryMode = "month";
+      state.countryHighlight = null;
+      renderCountryChart();
+    });
+    dom.countryQuarterBtn.addEventListener("click", () => {
+      state.countryMode = "quarter";
+      state.countryHighlight = null;
+      renderCountryChart();
+    });
+    dom.selectTrigger.addEventListener("click", () => toggleDropdown());
+    dom.countrySearch.addEventListener("input", renderCountryList);
+    dom.selectDefault.addEventListener("click", () => {
+      state.selectedCountries = new Set([BI_DATA.countries.defaultCountry]);
+      refreshCountry();
+    });
+    dom.selectAll.addEventListener("click", () => {
+      state.selectedCountries = new Set(BI_DATA.countries.selector);
+      refreshCountry();
+    });
+    dom.clearSelected.addEventListener("click", () => {
+      state.selectedCountries.clear();
+      refreshCountry();
+    });
+    document.addEventListener("click", (event) => {
+      if (!dom.selectBox.contains(event.target)) toggleDropdown(false);
+    });
+    window.addEventListener("resize", () => {
+      allChart.resize();
+      countryChart.resize();
+    });
+
+    allChart.on("click", (params) => {
+      const period = params?.name || params?.axisValue;
+      if (!period) return;
+      state.allHighlight = state.allHighlight === period ? null : period;
+      renderAllChart();
+    });
+
+    countryChart.on("click", (params) => {
+      const period = params?.name || params?.axisValue;
+      if (!period) return;
+      state.countryHighlight = state.countryHighlight === period ? null : period;
+      renderCountryChart();
+    });
+
+    updateKpis();
+    renderRanking(dom.latestMonthTop, BI_DATA.countries.topLatestMonth);
+    renderRanking(dom.latestQuarterTop, BI_DATA.countries.topLatestQuarter);
+    renderAllChart();
+    refreshCountry();
+  </script>
+</body>
+</html>
